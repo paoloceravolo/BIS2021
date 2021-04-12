@@ -4,6 +4,9 @@ import matplotlib as mpl
 import numpy as np
 import seaborn as sns
 
+from statsmodels.tsa.seasonal import seasonal_decompose
+
+
 df = pd.read_csv('https://raw.githubusercontent.com/selva86/datasets/master/a10.csv', parse_dates=['date'], index_col='date')
 
 #print(df)
@@ -51,7 +54,46 @@ sns.boxplot(x='month', y='value', data=df.loc[~df.year.isin([1991, 2008]), :])
 # Set Title
 axes[0].set_title('Year-wise Box Plot\n(The Trend)', fontsize=18); 
 axes[1].set_title('Month-wise Box Plot\n(The Seasonality)', fontsize=18)
+#plt.show()
+
+
+# Extract Trends
+
+# Set date as index
+df = df.set_index('date')
+
+# Multiplicative Decomposition 
+result_mul = seasonal_decompose(df['value'], model='multiplicative', extrapolate_trend='freq')
+
+#print(result_mul)
+
+# Additive Decomposition
+result_add = seasonal_decompose(df['value'], model='additive', extrapolate_trend='freq')
+
+#print(result_add)
+
+# Plot
+plt.rcParams.update({'figure.figsize': (10,10)})
+result_mul.plot().suptitle('Multiplicative Decompose', fontsize=22)
+result_add.plot().suptitle('Additive Decompose', fontsize=22)
 plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
