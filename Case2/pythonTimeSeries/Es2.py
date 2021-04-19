@@ -77,8 +77,9 @@ series = read_csv('https://raw.githubusercontent.com/selva86/datasets/master/a10
 values = series.values
 # transform the time series data into supervised learning
 # incresing n_in, the number of observation to be taken in input to the RF you get better predction
-data = series_to_supervised(values, n_in=1)
-# evaluate
+# with 1 the peaks are identified better, with 12 the average error is reduced, with more than 12 the error increseas again
+data = series_to_supervised(values, n_in=12)
+# evaluate		
 # firs parameter is the dataset, the second parameter is the cut point (n_test), i.e. the number of observations used in the training stage
 mae, y, yhat = walk_forward_validation(data, 150)
 print('MAE: %.3f' % mae)
