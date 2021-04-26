@@ -71,6 +71,7 @@ from pm4py.statistics.eventually_follows.log import get as efg_get
 
 efg_graph = efg_get.apply(event_log)
 print(len(efg_graph))
+print(efg_graph)
 
 
 
