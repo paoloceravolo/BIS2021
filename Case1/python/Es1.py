@@ -43,6 +43,55 @@ filtered_log_compl = variants_filter.apply(event_log, variants_filtered, paramet
 variants_filtered_compl = variants_filter.get_variants(filtered_log_compl)
 print(len(variants_filtered_compl))
 
+## Create a profile of the event log 
+percent = 1
+while percent > 0:
+	filtered_log = variants_filter.filter_log_variants_percentage(event_log, percentage=percent)
+	variants_filtered = variants_filter.get_variants(filtered_log)
+	print('The ', percent*100, '% of cases are ', len(filtered_log),\
+	#  without round
+	#'cases and generate ', (len(variants_filtered)/len(variants))*100,\
+	'cases and generate ', round(len(variants_filtered)/len(variants),3)*100,\
+ 	'% of variants, i.e. ', len(variants_filtered))
+	# this sollution generates long decimals due to the aproximation errors
+	# percent -= 0.1
+	percent = round(percent-0.1, 2)
+
+
+## Count cases per variant
+
+# define a function to return the keys of a dictionary
+def getList(dict): 
+	# dcit.keys() return and object, to have a list list() is required
+    return list(dict.keys())
+
+kk = getList(variants)
+i = 0
+cases = []
+#print(kk[i])
+while i < len(kk):
+	#get the value of a dictionary key
+	case = variants.get(kk[i])
+	#print(kk[i], 'has %s cases' % len(case))
+	#include in a list the number of cases for a variant 
+	cases.append(len(case))
+	i+=1
+
+data = {'Case': kk, 'Occurences': cases}
+df = pd.DataFrame(data)
+sorted = df.sort_values(by=['Occurences'], ascending=False)
+print(sorted)
+
+from pm4py.objects.log.util import interval_lifecycle
+enriched_log = interval_lifecycle.assign_lead_cycle_time(event_log)
+
+print(enriched_log)
+
+
+
+
+
+
 
 
 
